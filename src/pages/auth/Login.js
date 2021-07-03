@@ -9,8 +9,14 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
-        console.log('env--->', process.env.REACT_APP_REGISTER_URL);
         e.preventDefault();
+
+        try {
+            const result = auth.signInWithEmailAndPassword(email, password);
+            console.log(result);
+        } catch (e) {
+
+        }
     };
 
     const loginForm = () => (
