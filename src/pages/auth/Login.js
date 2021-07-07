@@ -44,7 +44,7 @@ const Login = ({ history }) => {
                         },
                     });
                 })
-                .catch();
+                .catch(err => console.log(err));
             // console.log(idTokenResult.token);
             // console.log("CREATE OR UPDATE RES");
 
@@ -76,7 +76,7 @@ const Login = ({ history }) => {
                             },
                         });
                     })
-                    .catch();
+                    .catch(err => console.log(err));
                 history.push("/");
             })
             .catch((err) => {
