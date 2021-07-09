@@ -1,15 +1,14 @@
-import React, {useEffect} from "react";
+
+import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import RegisterComplete from "./pages/auth/RegisterComplete";
 import Home from "./pages/Home";
 import Header from "./components/nav/Header";
+import RegisterComplete from "./pages/auth/RegisterComplete";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import History from "./pages/user/History";
 import UserRoute from "./components/routes/UserRoute";
@@ -22,11 +21,11 @@ import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 import SubCreate from "./pages/admin/sub/SubCreate";
 import SubUpdate from "./pages/admin/sub/SubUpdate";
 import ProductCreate from "./pages/admin/product/ProductCreate";
+import AllProducts from "./pages/admin/product/AllProducts";
 
-import {auth} from './firebase';
-import {useDispatch} from "react-redux";
-import {currentUser} from "./functions/auth";
-
+import { auth } from "./firebase";
+import { useDispatch } from "react-redux";
+import { currentUser } from "./functions/auth";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -34,9 +33,9 @@ const App = () => {
     // to check firebase auth state
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
-            if(user) {
+            if (user) {
                 const idTokenResult = await user.getIdTokenResult();
-                console.log("User",user);
+                console.log("user", user);
 
                 currentUser(idTokenResult.token)
                     .then((res) => {
@@ -47,20 +46,16 @@ const App = () => {
                                 email: res.data.email,
                                 token: idTokenResult.token,
                                 role: res.data.role,
-                                _id: res.data._id
+                                _id: res.data._id,
                             },
                         });
                     })
-                    .catch(err => console.log(err));
+                    .catch((err) => console.log(err));
             }
         });
-
-        //cleanup
-
+        // cleanup
         return () => unsubscribe();
-
     }, [dispatch]);
-
 
     return (
         <>
@@ -77,10 +72,15 @@ const App = () => {
                 <UserRoute exact path="/user/wishlist" component={Wishlist} />
                 <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
                 <AdminRoute exact path="/admin/category" component={CategoryCreate} />
-                <AdminRoute exact path="/admin/category/:slug" component={CategoryUpdate}/>
+                <AdminRoute
+                    exact
+                    path="/admin/category/:slug"
+                    component={CategoryUpdate}
+                />
                 <AdminRoute exact path="/admin/sub" component={SubCreate} />
                 <AdminRoute exact path="/admin/sub/:slug" component={SubUpdate} />
                 <AdminRoute exact path="/admin/product" component={ProductCreate} />
+                <AdminRoute exact path="/admin/products" component={AllProducts} />
             </Switch>
         </>
     );
