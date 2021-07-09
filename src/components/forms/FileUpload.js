@@ -1,9 +1,28 @@
 import React from "react";
+import Resizer from "react-image-file-resizer";
+import axios from "axios";
 
 const FileUpload = () => {
     const fileUploadAndResize = (e) => {
         // console.log(e.target.files);
         // resize
+        let files = e.target.files; // 3
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+                Resizer.imageFileResizer(
+                    files[i],
+                    720,
+                    720,
+                    "JPEG",
+                    100,
+                    0,
+                    (uri) => {
+                        console.log(uri);
+                    },
+                    "base64"
+                );
+            }
+        }
         // send back to server to upload to cloudinary
         // set url to images[] in the parent component state - ProductCreate
     };
